@@ -5,7 +5,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from tenacity import retry, stop_after_attempt, wait_exponential
 
-load_dotenv(dotenv_path=r"C:\call-center-pipeline\.env")
+load_dotenv(dotenv_path=r"C:\Users\um6p\Documents\stage\Call_extractor\call-center-pipeline\.env")
 
 API_BASE  = os.environ["CALL_API_BASE_URL"]
 API_TOKEN = os.environ["CALL_API_TOKEN"]
@@ -24,7 +24,7 @@ def fetch_page(cursor=None, from_dt=None, to_dt=None, to_number=None):
         params["start_time_lt"] = to_dt
     if to_number:
         params["to_number"] = to_number
-
+    
     r = requests.get(
         f"{API_BASE}/calls",
         headers={"X-Api-Key": API_TOKEN},  # ← X-Api-Key pas X-API-Key
