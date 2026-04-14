@@ -15,8 +15,13 @@ jobs:
         with:
           python-version: '3.11'
 
+      # ✅ AJOUT ICI
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      # ✅ amélioration install
       - name: Installer dépendances
-        run: pip install -r requirements.txt
+        run: pip install --no-cache-dir -r requirements.txt
 
       - name: Lancer ingestion
         env:
