@@ -37,8 +37,7 @@ def fetch_page(cursor=None, from_dt=None, to_dt=None, to_number=None):
     
     r = requests.get(
         f"{API_BASE}/calls",
-        headers={
-    "X-Api-Key": API_TOKEN},
+        headers={"Authorization": f"Bearer {API_TOKEN}"},
         params=params,
         timeout=30
     )
