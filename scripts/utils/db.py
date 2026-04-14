@@ -3,10 +3,20 @@ import requests
 from pathlib import Path
 from dotenv import load_dotenv
 
-load_dotenv(dotenv_path=r"C:\Users\um6p\Documents\stage\Call_extractor\call-center-pipeline\.env")
+from dotenv import load_dotenv
 
-SUPABASE_URL = os.environ["SUPABASE_URL"]
+load_dotenv()  # seulement local
+
+
 SUPABASE_KEY = os.environ["SUPABASE_KEY"]
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY")
+
+if not SUPABASE_URL:
+    raise ValueError("SUPABASE_URL manquant")
+
+if not SUPABASE_URL.startswith("http"):
+    raise ValueError(f"SUPABASE_URL invalide: {SUPABASE_URL}")
 
 HEADERS = {
     "apikey":        SUPABASE_KEY,
