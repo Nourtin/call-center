@@ -11,9 +11,24 @@ load_dotenv()
 API_KEY = os.getenv("CALL_API_TOKEN", "R9PhYFJkBlguePJlpj8Y9ArmxDkGy9TS")
 POSTGRES_CONN = os.getenv("POSTGRES_CONN")
 URL = "https://api.callrounded.com/v1/calls"
-START_TIME = "2026-04-09T11:00:00Z"
-END_TIME = "2026-04-09T13:00:00Z"
-TO_NUMBER = "+33974994331"
+from datetime import datetime, timezone
+
+# Heure actuelle en UTC
+now = datetime.now(timezone.utc)
+
+# Début de la journée (00:00:00)
+start_of_day = now.replace(hour=0, minute=0, second=0, microsecond=0)
+
+# Fin de la journée (23:59:59)
+end_of_day = now.replace(hour=23, minute=59, second=59, microsecond=0)
+
+START_TIME = start_of_day.isoformat().replace("+00:00", "Z")
+END_TIME = end_of_day.isoformat().replace("+00:00", "Z")
+
+#TO_NUMBER = "+33974994331"
+
+print("START_TIME:", START_TIME)
+print("END_TIME:", END_TIME)
 TABLE_NAME = "appels"
 
 
@@ -88,13 +103,13 @@ def fetch_all_calls():
     headers = {"X-Api-Key": API_KEY}
     page = 1
 
-    print(f"🚀 Extraction pour {TO_NUMBER} | {START_TIME} → {END_TIME}\n")
+    print(f"🚀 Extraction pour  | {START_TIME} → {END_TIME}\n")
 
     while True:
         params = {
             "start_time_gt": START_TIME,
             "start_time_lt": END_TIME,
-            "to_number": TO_NUMBER,
+           
             "include_variable_values": "true",
             "limit": 100,
         }
