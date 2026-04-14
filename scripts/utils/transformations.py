@@ -1,11 +1,13 @@
-"""Data transformation utilities."""
-import pandas as pd
+import uuid
 
-def build_row(c: dict, vars_dict: dict, unique_id: str, from_num: str) -> dict:
-    """
-    Reconstruit le dictionnaire row depuis les données brutes de l'API.
-    Identique à ta logique existante.
-    """
+def build_row(c: dict, unique_id: str, from_num: str) -> dict:
+    # variable_values est une LISTE [{name: x, value: y}, ...]
+    raw_vars = c.get("variable_values") or []
+    if isinstance(raw_vars, list):
+        vars_dict = {v["name"]: v["value"] for v in raw_vars}
+    else:
+        vars_dict = raw_vars  # fallback si c'est déjà un dict
+
     return {
         "UniqueID":                    unique_id,
         "from_number":                 from_num,
@@ -38,13 +40,13 @@ def build_row(c: dict, vars_dict: dict, unique_id: str, from_num: str) -> dict:
         "other_extract":               vars_dict.get("other_extract", ""),
         "Messagerie":                  vars_dict.get("Messagerie", ""),
         "list_name":                   vars_dict.get("list_name") or c.get("list_name", ""),
-        "url": f'="http://37.59.222.18/RECORDINGS/MP3/"&"{from_num}"&"-all.mp3"',
+        "url":                         f'="http://37.59.222.18/RECORDINGS/MP3/"&"{from_num}"&"-all.mp3"',
+        "recording_url":               c.get("recording_url", ""),
         "Classification":              "",
         "Resultat":                    ""
     }
 
 def filter_calls(calls: list) -> list:
-    """Supprime les appels de 0 seconde."""
     filtered = [c for c in calls if c.get("duration_seconds", 0) > 0]
     print(f"Filtre durée → {len(calls) - len(filtered)} supprimés | {len(filtered)} valides")
     return filtered

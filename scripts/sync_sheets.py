@@ -19,7 +19,7 @@ HEADERS = {
 
 def get_calls_from_db():
     r = requests.get(
-        f"{SUPABASE_URL}/rest/v1/calls_live",
+        f"{SUPABASE_URL}/rest/v1/appels",
         headers=HEADERS,
         params={
             "select": "*",
@@ -65,7 +65,7 @@ def sync_to_sheets():
     df = pd.DataFrame(calls)
 
     # Crée ou récupère l'onglet test
-    ws = get_or_create_sheet("test2")
+    ws = get_or_create_sheet("test3")
 
     # Préserve Classification/Resultat déjà remplis
     existing = ws.get_all_records()
