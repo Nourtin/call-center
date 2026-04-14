@@ -37,12 +37,15 @@ def fetch_page(cursor=None, from_dt=None, to_dt=None, to_number=None):
     
     r = requests.get(
         f"{API_BASE}/calls",
-        headers={"X-Api-Key": API_TOKEN},  # ← X-Api-Key pas X-API-Key
+        headers={"X-Api-Key": API_TOKEN},
         params=params,
         timeout=30
     )
+
+    print("STATUS:", r.status_code)
+    print("BODY:", r.text)
+
     r.raise_for_status()
-    return r.json()
 
 def fetch_all_calls(from_dt=None, to_dt=None, to_number=None, max_pages=20):
     all_calls  = []
